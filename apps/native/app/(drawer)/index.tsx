@@ -1,15 +1,33 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Button, StyleSheet } from "react-native";
 import { Container } from "@/components/container";
+import React from "react";
+import { Amplify } from "aws-amplify";
+import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react-native";
+
+const SignOutButton = () => {
+  const { signOut } = useAuthenticator();
+
+  return (
+    <View style={styles.signOutButton}>
+      <Button title="Sign Out" onPress={signOut} />
+    </View>
+  );
+};
 
 export default function Home() {
-	return (
-		<Container>
-			<ScrollView showsVerticalScrollIndicator={false} className="flex-1">
-				<Text className="font-mono text-foreground text-3xl font-bold mb-4">
-					BETTER T STACK
-				</Text>
-				<View className="bg-card border border-border rounded-xl p-6 mb-6 shadow-sm"></View>
-			</ScrollView>
-		</Container>
-	);
+  return (
+    <Container>
+      <Authenticator.Provider>
+        <Authenticator>
+          <SignOutButton />
+        </Authenticator>
+      </Authenticator.Provider>
+    </Container>
+  );
 }
+
+const styles = StyleSheet.create({
+  signOutButton: {
+    alignSelf: "flex-end"
+  }
+});
